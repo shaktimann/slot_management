@@ -17,8 +17,9 @@ public class User {
 	private String name;
 	private String email;
 	private String userType;
-	private String locationX;
-	private String entityId;
+	private double geoLat;
+	private double geoLong;
+	private String orgId;
 
 	// slots booked - list [entity, time]
 	//(pre-populate)

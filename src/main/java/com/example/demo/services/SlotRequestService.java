@@ -15,8 +15,17 @@ public class SlotRequestService {
     @Autowired
     private SlotRequestRepository repository;
 
+    @Autowired
+    private NotificationService notificationService;
+
     public SlotRequest save(SlotRequest slotRequest) {
-        return repository.save(slotRequest);
+        SlotRequest sr =  repository.save(slotRequest);
+        notificationService.addNotification("Slot Request submitted for approval", slotRequest.getUserId());
+        return sr;
+    }
+
+    public void remove(String id) {
+        repository.deleteById(id);
     }
 
     public List<SlotRequest> getAll(String userId) {

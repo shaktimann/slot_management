@@ -12,7 +12,7 @@ import org.springframework.data.elasticsearch.annotations.Document;
 import lombok.Data;
 
 
-@Document(indexName = "entityDoc", type = "entity")
+@Document(indexName = "entity", type = "entity")
 @Data
 public class Entity {
 
@@ -20,8 +20,8 @@ public class Entity {
     private String id;
     private String organizationId;
     
-    private double geolat;
-    private double geolong; 
+    private double geoLat;
+    private double geoLong;
     
     private String address;
     

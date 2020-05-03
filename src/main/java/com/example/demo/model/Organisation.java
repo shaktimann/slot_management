@@ -5,7 +5,7 @@ import org.springframework.data.elasticsearch.annotations.Document;
 
 import lombok.Data;
 
-@Document(indexName = "orgDoc", type = "organisation")
+@Document(indexName = "org", type = "organisation")
 @Data
 public class Organisation {
     
