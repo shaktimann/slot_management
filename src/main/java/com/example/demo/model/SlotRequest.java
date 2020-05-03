@@ -5,7 +5,7 @@ import org.springframework.data.elasticsearch.annotations.Document;
 
 import lombok.Data;
 
-@Document(indexName = "sd", type = "sl")
+@Document(indexName = "sr", type = "slotRequest")
 @Data
 public class SlotRequest {
 

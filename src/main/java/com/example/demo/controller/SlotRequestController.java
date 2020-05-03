@@ -17,7 +17,7 @@ public class SlotRequestController {
     @Autowired
     private SlotRequestService slotRequestService;
 
-    @RequestMapping(value="/user/${userId}",method = RequestMethod.GET)
+    @RequestMapping(value="/user",method = RequestMethod.GET)
     public List<SlotRequest> getUserSlotRequests(String userId){
         return slotRequestService.getAll(userId);
     }
