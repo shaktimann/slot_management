@@ -12,11 +12,6 @@ import org.springframework.data.elasticsearch.annotations.Document;
 import lombok.Data;
 
 
-/* how to use slots here ?
- * Not sure if we want to use enum for slots
- * */
- 
-
 @Document(indexName = "entityDoc", type = "entity")
 @Data
 public class Entity {
@@ -39,6 +34,8 @@ public class Entity {
     private int capacityPerSlot;
     private Map<Timestamp, Timestamp> breakDurations;
     private List<Date> closedDates;
+    
+    private SanitizationCycle sanitizationCadence;
     
     
 }
