@@ -6,8 +6,11 @@ import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.nio.ByteBuffer;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
+import java.util.UUID;
 import java.util.function.Consumer;
 
 @Service
@@ -34,7 +37,17 @@ public class NotificationService {
 
     public void addNotification(String message, String userId)
     {
-        Notification n = new Notification(message, userId);
+        Notification n = new Notification(getUniqueId(),System.currentTimeMillis(),message, userId, false);
         save(n);
+    }
+
+    public String getUniqueId()
+    {
+        UUID uuid = UUID.randomUUID();
+        byte[] src = ByteBuffer.wrap(new byte[16])
+                .putLong(uuid.getMostSignificantBits())
+                .putLong(uuid.getLeastSignificantBits())
+                .array();
+       return Base64.getUrlEncoder().encodeToString(src).substring(0, 22);
     }
 }

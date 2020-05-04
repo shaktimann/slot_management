@@ -16,7 +16,7 @@ public class NotificationController {
 
     @RequestMapping(value="/user/{userId}",method = RequestMethod.GET)
     public List<Notification> getNotificationsForUser(@PathVariable String userId){
-        System.out.println("ID is " + userId);
+        //System.out.println("ID is " + userId);
         return notificationService.getAll(userId);
     }
 
