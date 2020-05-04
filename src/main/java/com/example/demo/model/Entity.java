@@ -30,12 +30,13 @@ public class Entity {
 //    private Timestamp openingTime;
 //    private Timestamp closingTime;
 
-    private LocalTime openingTime;
-    private LocalTime closingTime;
-    private Map<LocalTime, LocalTime> breakDurations;
+    private long openingTime;
+    private long closingTime;
+    
+    private Map<Long, Long> breakDurations;
 
-    private Duration expirationTime;
-    private Duration slotDuration;
+    private long expirationTime;
+    private long slotDuration;
     private int capacityPerSlot;
     // private Map<Timestamp, Timestamp> breakDurations;
 

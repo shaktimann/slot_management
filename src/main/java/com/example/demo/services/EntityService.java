@@ -1,6 +1,5 @@
 package com.example.demo.services;
 
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -8,7 +7,6 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.function.Consumer;
 
-import org.joda.time.LocalTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,8 +14,6 @@ import com.example.demo.model.Entity;
 import com.example.demo.model.EntityType;
 import com.example.demo.model.User;
 import com.example.demo.repos.EntityRepository;
-
-import ch.qos.logback.core.util.Duration;
 
 @Service
 public class EntityService {
@@ -103,32 +99,28 @@ public class EntityService {
 //
 //    }
     
-    public Map<LocalTime, LocalTime> getAllSlotsInADay(Entity entity) {
+    public Map<Long, Long> getAllSlotsInADay(Entity entity) {
 
         // assuming here that the break slots are valid and occupy the entire slots
-        Map<LocalTime, LocalTime> allSlotsAfterBreaks = new HashMap<>();
-        Map<LocalTime, LocalTime> breaks = entity.getBreakDurations();
+        Map<Long, Long> allSlotsAfterBreaks = new HashMap<>();
+        Map<Long, Long> breaks = entity.getBreakDurations();
         boolean ifSkipSlot = false;
 
-        LocalTime openingTime = entity.getOpeningTime();
-        LocalTime closingTime = entity.getClosingTime();
-        Duration slotDuration = entity.getSlotDuration();
+        long openingTime = entity.getOpeningTime();
+        long closingTime = entity.getClosingTime();
+        long slotDuration = entity.getSlotDuration();
         
 
-        LocalTime currentOpeningTime = openingTime;
-        LocalTime currentClosingTime = new org.joda.time.LocalTime(openingTime.getHourOfDay(),
-                openingTime.getMinuteOfHour(), openingTime.getSecondOfMinute());
+        long currentOpeningTime = openingTime;
+        long currentClosingTime = openingTime;
 
-        while (currentOpeningTime.isBefore(currentClosingTime)) {
-            currentClosingTime.withMillisOfDay(currentOpeningTime.getMillisOfDay() + (int)slotDuration.getMilliseconds());
+        while (currentOpeningTime < closingTime) {
+            currentClosingTime = currentOpeningTime + slotDuration;
 
-            ifSkipSlot = true;
+            ifSkipSlot = false;
 
-            for (Map.Entry<LocalTime, LocalTime> entry : breaks.entrySet()) {
-                if ((currentOpeningTime.isAfter(entry.getKey())
-                        || currentOpeningTime.getMillisOfDay() == entry.getKey().getMillisOfDay())
-                        && (currentClosingTime.isBefore(entry.getValue())
-                                || currentClosingTime.getMillisOfDay() == entry.getValue().getMillisOfDay())) {
+            for (Map.Entry<Long, Long> entry : breaks.entrySet()) {
+                if (currentOpeningTime >= entry.getKey() && currentClosingTime <= entry.getValue()) {
                     currentOpeningTime = currentClosingTime;
                     ifSkipSlot = true;
                     break;
@@ -137,7 +129,7 @@ public class EntityService {
             if (ifSkipSlot == true)
                 continue;
             allSlotsAfterBreaks.put(currentOpeningTime,
-                    currentClosingTime.isBefore(closingTime) ? currentClosingTime : closingTime);
+                    currentClosingTime <= closingTime ? currentClosingTime : closingTime);
             currentOpeningTime = currentClosingTime;
         }
         return allSlotsAfterBreaks;

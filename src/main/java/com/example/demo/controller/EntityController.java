@@ -56,14 +56,9 @@ public class EntityController {
     public int getCapacityByEntityId(@PathVariable String id) {
         return entityService.gettotalCapacityInADay(entityService.findEntityById(id).get());
     }
-
-//    @RequestMapping(value = "/slots/{id}")
-//    public Map<Timestamp, Timestamp> getAllSlotsForADay(@PathVariable String id) {
-//        return entityService.getAllSlotsInADay(entityService.findEntityById(id).get());
-//    }
     
     @RequestMapping(value = "/slots/{id}")
-    public Map<LocalTime, LocalTime> getAllSlotsForADay(@PathVariable String id) {
+    public Map<Long, Long> getAllSlotsForADay(@PathVariable String id) {
         return entityService.getAllSlotsInADay(entityService.findEntityById(id).get());
     }
 

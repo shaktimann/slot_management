@@ -25,6 +25,7 @@ public class SlotRequestController {
 
     @RequestMapping(value = "/",method = RequestMethod.POST)
     public SlotRequest save(@RequestBody SlotRequest slotRequest) {
+        // check if capacity for that slot duration is available
         return slotRequestService.save(slotRequest);
     }
 
