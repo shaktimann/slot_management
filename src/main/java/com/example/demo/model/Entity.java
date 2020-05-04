@@ -1,41 +1,48 @@
 package com.example.demo.model;
 
 import java.sql.Date;
-import java.sql.Timestamp;
-import java.time.Duration;
 import java.util.List;
 import java.util.Map;
 
+import org.joda.time.LocalTime;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.elasticsearch.annotations.Document;
 
+import ch.qos.logback.core.util.Duration;
 import lombok.Data;
 
-
-@Document(indexName = "entity", type = "entity")
+@Document(indexName = "en", type = "entity")
 @Data
 public class Entity {
 
     @Id
     private String id;
+    private String name;
     private String organizationId;
-    
+
     private double geoLat;
     private double geoLong;
-    
+
     private String address;
-    
+
     private List<User> admins;
-    private List<User> memberUsers;
-    
-    private Timestamp openingTime;
-    private Timestamp closingTime;
+
+//    private Timestamp openingTime;
+//    private Timestamp closingTime;
+
+    private LocalTime openingTime;
+    private LocalTime closingTime;
+    private Map<LocalTime, LocalTime> breakDurations;
+
+    private Duration expirationTime;
     private Duration slotDuration;
     private int capacityPerSlot;
-    private Map<Timestamp, Timestamp> breakDurations;
+    // private Map<Timestamp, Timestamp> breakDurations;
+
     private List<Date> closedDates;
-    
+    private List<WorkingDay> workingDays;
+
     private SanitizationCycle sanitizationCadence;
-    
-    
+    private EntityType type;
+
 }

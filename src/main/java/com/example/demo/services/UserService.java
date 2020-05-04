@@ -2,6 +2,7 @@ package com.example.demo.services;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.function.Consumer;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,5 +33,9 @@ public class UserService {
 		});
 		return users;
 	}
+	
+	public Optional<User> findUserById(String id) {
+        return repository.findById(id);
+    }
 
 }
