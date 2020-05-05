@@ -3,16 +3,22 @@ package com.example.demo.services;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.User.UserBuilder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.stereotype.Component;
 
 import com.example.demo.model.User;
-
+@Component
 public class UserDetailsServiceImpl implements UserDetailsService{
 
+	
+	@Autowired
+	private UserService userService;
+	
 	 @Override
 	  public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
@@ -39,7 +45,7 @@ public class UserDetailsServiceImpl implements UserDetailsService{
 	    if(username.equalsIgnoreCase("admin")) {
 	    	List<String> users  = new ArrayList<String>();
 	    	users.add("USER");
-	      return User.builder().name(username).password("Lakhan@123").roles(users).build();
+	      return userService.findUserById(username).get();
 	    }
 	    return null;
 	  }
