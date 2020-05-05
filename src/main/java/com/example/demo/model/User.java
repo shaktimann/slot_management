@@ -1,15 +1,17 @@
 package com.example.demo.model;
 
-import org.springframework.data.annotation.Id;
-import org.springframework.data.elasticsearch.annotations.Document;
-
-import lombok.Data;
-
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.data.annotation.Id;
+import org.springframework.data.elasticsearch.annotations.Document;
+
+import lombok.Builder;
+import lombok.Data;
+
 @Document(indexName = "sd", type = "user")
 @Data
+@Builder
 public class User {
 
 	@Id
@@ -20,6 +22,8 @@ public class User {
 	private double geoLat;
 	private double geoLong;
 	private String orgId;
+	private String password;
+	private List<String> roles;
 
 	// slots booked - list [entity, time]
 	//(pre-populate)
