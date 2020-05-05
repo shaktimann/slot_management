@@ -27,8 +27,8 @@ public class Entity {
 
     private List<User> admins;
 
-//    private Timestamp openingTime;
-//    private Timestamp closingTime;
+    // private Timestamp openingTime;
+    // private Timestamp closingTime;
 
     private long openingTime;
     private long closingTime;
@@ -38,6 +38,7 @@ public class Entity {
     private long expirationTime;
     private long slotDuration;
     private int capacityPerSlot;
+   
     // private Map<Timestamp, Timestamp> breakDurations;
 
     private List<Date> closedDates;

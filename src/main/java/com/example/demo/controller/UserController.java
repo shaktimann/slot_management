@@ -17,23 +17,22 @@ import com.example.demo.services.UserService;
 @RequestMapping("/api/user")
 public class UserController {
 
-	@Autowired
-	private UserService userService;
-	
-	@RequestMapping("all")
-	public List<User> getAll(){
-		return userService.getAll();
-	}
-	
-	
-	@RequestMapping(value = "/",method = RequestMethod.POST)
-	public User save(@RequestBody User user) {
-		return userService.save(user);
-	}
-	
-	@RequestMapping(value = "/{id}")
-    public Optional<User> getEntityById(@PathVariable String id) {
-        return userService.findUserById(id);              
+    @Autowired
+    private UserService userService;
+
+    @RequestMapping("all")
+    public List<User> getAll() {
+        return userService.getAll();
     }
-	
+
+    @RequestMapping(value = "/", method = RequestMethod.POST)
+    public User save(@RequestBody User user) {
+        return userService.save(user);
+    }
+
+    @RequestMapping(value = "/{id}")
+    public Optional<User> getUserById(@PathVariable String id) {
+        return userService.findUserById(id);
+    }
+
 }

@@ -1,13 +1,17 @@
 package com.example.demo.services;
 
+import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.function.Consumer;
 
+import org.apache.lucene.util.fst.PairOutputs;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.model.Entity;
@@ -172,6 +176,17 @@ public class EntityService {
 
     public double rad2deg(double rad) {
         return (rad * 180.0 / Math.PI);
+    }
+
+    public Pair<Long, Long> getCurrentSlot(Entity entity) {
+        Map<Long, Long> allSlots = getAllSlotsInADay(entity);
+        long currentTimeinSeconds =  LocalTime.now().toSecondOfDay();
+        for (Map.Entry<Long, Long> entry : allSlots.entrySet()) {
+            if(entry.getKey() <= currentTimeinSeconds && entry.getValue() > currentTimeinSeconds) {
+                return Pair.of(entry.getKey(), entry.getValue());
+            }
+        }
+        return null;
     }
 
 }

@@ -45,7 +45,8 @@ public class UserDetailsServiceImpl implements UserDetailsService{
 	    if(username.equalsIgnoreCase("admin")) {
 	    	List<String> users  = new ArrayList<String>();
 	    	users.add("USER");
-	      return userService.findUserById(username).get();
+	    	return User.builder().name(username).password("admin").roles(users).build();
+	      // return userService.findUserById(username).get();
 	    }
 	    return null;
 	  }

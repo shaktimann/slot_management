@@ -1,11 +1,17 @@
 package com.example.demo.controller;
 
+import java.time.LocalDate;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
 import org.joda.time.LocalTime;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.util.Pair;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.format.annotation.DateTimeFormat.ISO;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.model.Entity;
 import com.example.demo.services.EntityService;
+import com.example.demo.services.SlotRequestService;
 import com.example.demo.services.UserService;
 
 @RestController
@@ -26,6 +33,9 @@ public class EntityController {
 
     @Autowired
     private UserService userService;
+    
+    @Autowired
+    private SlotRequestService slotRequestService;
 
     @RequestMapping("/items")
     public List<Entity> getAll() {
@@ -61,5 +71,29 @@ public class EntityController {
     public Map<Long, Long> getAllSlotsForADay(@PathVariable String id) {
         return entityService.getAllSlotsInADay(entityService.findEntityById(id).get());
     }
+    
+    @RequestMapping(value = "/slot/current/{id}")
+    public Pair<Long, Long> getCurrentSlot(@PathVariable String id) {
+        return entityService.getCurrentSlot(entityService.findEntityById(id).get());
+    }
+    
+    @RequestMapping(value = "slot/availability/{id}")
+    public boolean checkIfSlotIsAvailable(@PathVariable String id, @RequestParam @DateTimeFormat(pattern="MM/dd/yyyy") Date date, @RequestParam long startTime,
+            @RequestParam long endTime) {
+        return slotRequestService.checkIfSlotIsAvailable(id, date.getTime()+startTime, date.getTime()+endTime);
+    }
+    
+    @RequestMapping(value = "slots/availability/{id}")
+    public Map<Long, Long> getAllAvailableSlotsForADate(@PathVariable String id, @RequestParam @DateTimeFormat(pattern="MM/dd/yyyy") Date date) {
+        Map<Long, Long> allSlots = entityService.getAllSlotsInADay(entityService.findEntityById(id).get());
+        Map<Long, Long> allSlotsWithDates = new HashMap<Long, Long>();
+        for (Map.Entry<Long, Long> slot : allSlots.entrySet()) {
+            if(slotRequestService.checkIfSlotIsAvailable(id, slot.getKey() + date.getTime(), slot.getKey() + date.getTime())) {
+                allSlotsWithDates.put(slot.getKey(), slot.getValue());
+            }
+        }
+        return allSlotsWithDates;
+    }
+    
 
 }
