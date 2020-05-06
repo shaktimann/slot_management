@@ -6,12 +6,10 @@ import java.util.Map;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.elasticsearch.annotations.Document;
 
-import lombok.Builder;
 import lombok.Data;
 
 @Document(indexName = "sd", type = "user")
 @Data
-@Builder
 public class User {
 
 	@Id

@@ -3,8 +3,12 @@ package com.example.demo.services;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.model.SlotRequest;
@@ -19,27 +23,37 @@ public class SlotRequestService {
 
     @Autowired
     private NotificationService notificationService;
-    
+
     @Autowired
     private EntityService entityService;
 
+    @Autowired
+    private UserService userService;
+
     public SlotRequest save(SlotRequest slotRequest) {
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        slotRequest.setUserEmail(authentication.getName());
+
         // check if capacity for that slot duration is available
-        if(checkIfSlotIsAvailable(slotRequest.getEntityId(), slotRequest.getStartTime(), slotRequest.getEndTime())) {
+        if (checkIfSlotIsAvailable(slotRequest.getEntityId(), slotRequest.getDateOfRequest(),
+                slotRequest.getStartTime(), slotRequest.getEndTime())) {
             slotRequest.setStatus(SlotStatus.APPROVED);
-            notificationService.addNotification("Slot Request approved", slotRequest.getUserId());
+            notificationService.addNotification("Slot Request approved",
+                    userService.findUserByEmail(slotRequest.getUserEmail()).get().getId());
         } else {
             slotRequest.setStatus(SlotStatus.REJECTED);
-            notificationService.addNotification("Slot Request rejected", slotRequest.getUserId());
+            notificationService.addNotification("Slot Request rejected",
+                    userService.findUserByEmail(slotRequest.getUserEmail()).get().getId());
         }
-        SlotRequest sr =  repository.save(slotRequest);
+        SlotRequest sr = repository.save(slotRequest);
         return sr;
     }
 
     public void remove(String id) {
         repository.deleteById(id);
     }
-    
+
     public List<SlotRequest> getAll() {
         Iterable<SlotRequest> iterable = repository.findAll();
         List<SlotRequest> slotRequests = new ArrayList<>();
@@ -54,7 +68,7 @@ public class SlotRequestService {
     }
 
     public List<SlotRequest> getAll(String userId) {
-        Iterable<SlotRequest> iterable = repository.findByUserId(userId);
+        Iterable<SlotRequest> iterable = repository.findByUserEmail(userService.findUserById(userId).get().getEmail());
         List<SlotRequest> slotRequests = new ArrayList<>();
         iterable.forEach(new Consumer<SlotRequest>() {
             @Override
@@ -65,17 +79,34 @@ public class SlotRequestService {
         });
         return slotRequests;
     }
-    
-    public boolean checkIfSlotIsAvailable(String entityId, long startTime, long endTime) {
+
+    public boolean checkIfSlotIsAvailable(String entityId, String dateOfRequest, long startTime, long endTime) {
         int unavailableCapacityForTheSlot = repository
-                .findByEntityIdAndStartTimeAndEndTimeAndStatus(entityId, startTime, endTime,
-                        SlotStatus.SUBMITTED)
+                .findByEntityIdAndDateOfRequestAndStartTimeAndEndTimeAndStatus(entityId, dateOfRequest, startTime,
+                        endTime, SlotStatus.SUBMITTED)
                 .size()
-                + repository.findByEntityIdAndStartTimeAndEndTimeAndStatus(entityId, startTime, endTime,
-                        SlotStatus.APPROVED).size();
-        if(unavailableCapacityForTheSlot < entityService.findEntityById(entityId).get().getCapacityPerSlot()) {
+                + repository.findByEntityIdAndDateOfRequestAndStartTimeAndEndTimeAndStatus(entityId, dateOfRequest,
+                        startTime, endTime, SlotStatus.APPROVED).size();
+        if (unavailableCapacityForTheSlot < entityService.findEntityById(entityId).get().getCapacityPerSlot()) {
             return true;
         }
         return false;
+    }
+
+    public List<SlotRequest> getAllSlotRequestsForUserEmail() {
+        return repository.findByUserEmail(SecurityContextHolder.getContext().getAuthentication().getName());
+    }
+
+    public List<SlotRequest> findByEntityIdAndDateOfRequest(String entityId, String date) {
+        List<SlotRequest> submittedSlots = repository.findByEntityIdAndDateOfRequestAndStatus(entityId, date, SlotStatus.SUBMITTED);
+        List<SlotRequest> approvedSlots = repository.findByEntityIdAndDateOfRequestAndStatus(entityId, date, SlotStatus.APPROVED);
+        return Stream.concat(submittedSlots.stream(), approvedSlots.stream())
+        .collect(Collectors.toList());
+    }
+
+    public SlotRequest cancelSlot(String id) {
+            SlotRequest slotRequest = repository.findById(id).get();
+            slotRequest.setStatus(SlotStatus.CANCELLED);
+            return repository.save(slotRequest);
     }
 }

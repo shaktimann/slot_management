@@ -34,5 +34,10 @@ public class UserController {
     public Optional<User> getUserById(@PathVariable String id) {
         return userService.findUserById(id);
     }
+    
+    @RequestMapping(value = "/{email}")
+    public Optional<User> getUserByEmail(@PathVariable String email) {
+        return userService.findUserByEmail(email);
+    }
 
 }

@@ -1,9 +1,13 @@
 package com.example.demo.repos;
 
+import java.util.Optional;
+
 import org.springframework.data.elasticsearch.repository.ElasticsearchRepository;
-import org.springframework.stereotype.Repository;
 
 import com.example.demo.model.User;
-public interface UserRepository extends ElasticsearchRepository<User, String>{
 
+public interface UserRepository extends ElasticsearchRepository<User, String> {
+    Optional<User> findByEmail(String email);
+
+    Optional<User> findByName(String name);
 }

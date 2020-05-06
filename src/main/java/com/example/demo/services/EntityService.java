@@ -2,14 +2,12 @@ package com.example.demo.services;
 
 import java.time.LocalTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.function.Consumer;
 
-import org.apache.lucene.util.fst.PairOutputs;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Service;
@@ -63,45 +61,6 @@ public class EntityService {
         return entities;
 
     }
-
-//    public Map<Timestamp, Timestamp> getAllSlotsInADay(Entity entity) {
-//
-//        // assuming here that the break slots are valid and occupy the entire slots
-//        Map<Timestamp, Timestamp> allSlotsAfterBreaks = new HashMap<>();
-//        Map<Timestamp, Timestamp> breaks = entity.getBreakDurations();
-//        boolean ifSkipSlot = false;
-//
-//        Timestamp openingTime = entity.getOpeningTime();
-//        Timestamp closingTime = entity.getClosingTime();
-//        Duration slotDuration = entity.getSlotDuration();
-//
-//        Timestamp currentOpeningTime = openingTime;
-//        Timestamp currentClosingTime = new Timestamp(currentOpeningTime.getTime());
-//
-//        while (currentOpeningTime.before(closingTime)) {
-//            currentClosingTime.setTime(currentOpeningTime.getTime() + slotDuration.getMilliseconds());
-//
-//            ifSkipSlot = true;
-//
-//            for (Map.Entry<Timestamp, Timestamp> entry : breaks.entrySet()) {
-//                if ((currentOpeningTime.after(entry.getKey())
-//                        || currentOpeningTime.getTime() == entry.getKey().getTime())
-//                        && (currentClosingTime.before(entry.getValue())
-//                                || currentClosingTime.getTime() == entry.getValue().getTime())) {
-//                    currentOpeningTime = currentClosingTime;
-//                    ifSkipSlot = true;
-//                    break;
-//                }
-//            }
-//            if (ifSkipSlot == true)
-//                continue;
-//            allSlotsAfterBreaks.put(currentOpeningTime,
-//                    currentClosingTime.before(closingTime) ? currentClosingTime : closingTime);
-//            currentOpeningTime = currentClosingTime;
-//        }
-//        return allSlotsAfterBreaks;
-//
-//    }
     
     public Map<Long, Long> getAllSlotsInADay(Entity entity) {
 

@@ -1,11 +1,5 @@
 package com.example.demo.services;
 
-import com.example.demo.model.Notification;
-import com.example.demo.repos.NotificationRepository;
-import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.Base64;
@@ -13,8 +7,15 @@ import java.util.List;
 import java.util.UUID;
 import java.util.function.Consumer;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.example.demo.model.Notification;
+import com.example.demo.repos.NotificationRepository;
+
 @Service
 public class NotificationService {
+    
     @Autowired
     private NotificationRepository repository;
 

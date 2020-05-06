@@ -1,8 +1,5 @@
 package com.example.demo.services;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.User.UserBuilder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -24,8 +21,7 @@ public class UserDetailsServiceImpl implements UserDetailsService{
 
 	    /*Here we are using dummy data, you need to load user data from
 	     database or other third party application*/
-	    User user = findUserbyUername(username);
-
+	    User user = findUserbyEmail(username);
 	    String[]  roles = new String[2];
 	    roles[0] = "USER";
 	    roles[1] = "ADMIN";
@@ -41,14 +37,8 @@ public class UserDetailsServiceImpl implements UserDetailsService{
 	    return builder.build();
 	  }
 
-	  private User findUserbyUername(String username) {
-	    if(username.equalsIgnoreCase("admin")) {
-	    	List<String> users  = new ArrayList<String>();
-	    	users.add("USER");
-	    	return User.builder().name(username).password("admin").roles(users).build();
-	      // return userService.findUserById(username).get();
-	    }
-	    return null;
+	  private User findUserbyEmail(String email) {
+	    	return userService.findUserByEmail(email).get();
 	  }
 	
 }

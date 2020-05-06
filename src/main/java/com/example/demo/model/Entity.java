@@ -4,11 +4,9 @@ import java.sql.Date;
 import java.util.List;
 import java.util.Map;
 
-import org.joda.time.LocalTime;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.elasticsearch.annotations.Document;
 
-import ch.qos.logback.core.util.Duration;
 import lombok.Data;
 
 @Document(indexName = "en", type = "entity")
@@ -27,9 +25,6 @@ public class Entity {
 
     private List<User> admins;
 
-    // private Timestamp openingTime;
-    // private Timestamp closingTime;
-
     private long openingTime;
     private long closingTime;
     
@@ -38,9 +33,7 @@ public class Entity {
     private long expirationTime;
     private long slotDuration;
     private int capacityPerSlot;
-   
-    // private Map<Timestamp, Timestamp> breakDurations;
-
+ 
     private List<Date> closedDates;
     private List<WorkingDay> workingDays;
 
