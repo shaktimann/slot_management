@@ -81,6 +81,7 @@ public class SlotRequestService {
     }
 
     public boolean checkIfSlotIsAvailable(String entityId, String dateOfRequest, long startTime, long endTime) {
+    	System.out.println(startTime + ":" +endTime);
         int unavailableCapacityForTheSlot = repository
                 .findByEntityIdAndDateOfRequestAndStartTimeAndEndTimeAndStatus(entityId, dateOfRequest, startTime,
                         endTime, SlotStatus.SUBMITTED)

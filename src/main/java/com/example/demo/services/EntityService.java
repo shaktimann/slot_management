@@ -71,7 +71,7 @@ public class EntityService {
 
         long openingTime = entity.getOpeningTime();
         long closingTime = entity.getClosingTime();
-        long slotDuration = entity.getSlotDuration();
+        long slotDuration = entity.getSlotDuration()*1000;
         
 
         long currentOpeningTime = openingTime;
@@ -81,14 +81,16 @@ public class EntityService {
             currentClosingTime = currentOpeningTime + slotDuration;
 
             ifSkipSlot = false;
-
-            for (Map.Entry<Long, Long> entry : breaks.entrySet()) {
-                if (currentOpeningTime >= entry.getKey() && currentClosingTime <= entry.getValue()) {
-                    currentOpeningTime = currentClosingTime;
-                    ifSkipSlot = true;
-                    break;
-                }
+            if(breaks !=null) {
+            	for (Map.Entry<Long, Long> entry : breaks.entrySet()) {
+                    if (currentOpeningTime >= entry.getKey() && currentClosingTime <= entry.getValue()) {
+                        currentOpeningTime = currentClosingTime;
+                        ifSkipSlot = true;
+                        break;
+                    }
+				}
             }
+            
             if (ifSkipSlot == true)
                 continue;
             allSlotsAfterBreaks.put(currentOpeningTime,

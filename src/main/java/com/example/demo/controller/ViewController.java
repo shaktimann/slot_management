@@ -21,4 +21,42 @@ public class ViewController {
 		return "login";
 	}
 
+		
+	@RequestMapping("/bookSlot")
+	public String bookSlot() {
+		return "bookSlot";
+	}
+	
+	
+	@RequestMapping("/loginStore")
+	public String registerStore() {
+		return "loginStore";
+	}
+	
+	@RequestMapping("/configureStore")
+	public String configureStore() {
+		return "configureStore";
+	}
+	/*
+	@RequestMapping("/login")
+	public String getlogin() {
+		return "login";
+	}
+	
+	@RequestMapping("/login")
+	public String getlogin() {
+		return "login";
+	}
+	
+	@RequestMapping("/login")
+	public String getlogin() {
+		return "login";
+	}
+	
+	@RequestMapping("/login")
+	public String getlogin() {
+		return "login";
+	}
+	*/
+
 }

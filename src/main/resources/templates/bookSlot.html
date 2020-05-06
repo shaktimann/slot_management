@@ -18,7 +18,7 @@
   <!-- Custom styles for this template-->
   <link href="css/sb-admin-2.min.css" rel="stylesheet">
   <link rel="stylesheet" href="css/tree_maker-min.css">
-
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 
 </head>
 
@@ -44,17 +44,37 @@
 
           <!-- Page Heading -->
           <div class="d-sm-flex align-items-center justify-content-between mb-4">
-            <h1 class="h3 mb-0 text-gray-800">Near By Stores</h1>
-            
+            <h1 class="h3 mb-0 text-gray-800">Booking</h1>
           </div>
 
           <!-- Content Row -->
-          <div class="row" id='cards'>
-
-            <!-- Earnings (Monthly) Card Example -->
-                       
-
-            
+          <div class="row">
+          	<div class="col-lg-12">
+				<div class="card mb-4">
+	                <div class="card-header py-3">
+	                  <h6 class="m-0 font-weight-bold text-primary">Book Your slot</h6>
+	                </div>
+	                <div class="card-body">
+	                <form class="d-none d-sm-inline-block form-inline ml-md-3 my-2 my-md-0 mw-100 ">
+	                  <div class="input-group ">
+			              <input type="text" class="form-control w-25" aria-label="Search" aria-describedby="basic-addon2" id="datepicker" readonly>
+			              <div class="input-group-append">
+			                <button class="btn btn-primary" type="button" onclick="slot.getSlots()">
+			                  <i class="fas fa-search fa-sm"></i>
+			                </button>
+			              </div>
+			              <div class="spinner-border text-primary" style="display:none" role="status" id="loader">
+  							<span class="sr-only">Loading...</span>
+						  </div>
+		              </div>
+		              </form>
+	                   <br/>
+	                  <br/>
+	                  <div id="slots"></div>
+	                  
+	                </div>
+              </div>
+            </div>  
           </div>
 
         </div>
@@ -102,6 +122,34 @@
       </div>
     </div>
   </div>
+  
+  <div class="modal" tabindex="-1" role="dialog" id="exampleModal">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Book Your Slot </h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p> Are you sure you want to book slot for : <span id="Slot_book_confirmation"></span></p>
+        <div class="spinner-border text-primary" style="display:none" role="status" id="loader_book">
+			<span class="sr-only">Loading...</span>
+	  </div>
+	  <div id="successMsg" style="display:none">
+      		<a href="#" class="btn btn-success btn-circle">
+                 <i class="fas fa-check"></i>
+            </a>
+      	</div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" onClick="slot.book()">Book</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
 
   <!-- Bootstrap core JavaScript-->
   <script src="vendor/jquery/jquery.min.js"></script>
@@ -112,9 +160,15 @@
 
   <!-- Custom scripts for all pages-->
   <script src="js/sb-admin-2.min.js"></script>
-	<script src="js/ajax.js"></script>
-	<script src="js/EntityService.js"></script>
-	<script src="js/dashboard.js"></script>
+	 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+	  <script>
+	  $( function() {
+	    $( "#datepicker" ).datepicker();
+	  } );
+	  </script>	
+	  <script src="js/ajax.js"></script>
+	  <script src="js/SlotService.js"></script>
+	  <script src="js/BookSlots.js"></script>
 </body>
 
 </html>
