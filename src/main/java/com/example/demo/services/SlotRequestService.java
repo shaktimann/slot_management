@@ -34,6 +34,7 @@ public class SlotRequestService {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         slotRequest.setUserEmail(authentication.getName());
+        slotRequest.setEntityName(entityService.findEntityById(slotRequest.getEntityId()).get().getName());
 
         // check if capacity for that slot duration is available
         if (checkIfSlotIsAvailable(slotRequest.getEntityId(), slotRequest.getDateOfRequest(),

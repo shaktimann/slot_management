@@ -27,4 +27,5 @@ public class SlotRequest {
     @Getter
     @Setter
     private SlotStatus status = SlotStatus.SUBMITTED;
+    private String entityName;
 }
