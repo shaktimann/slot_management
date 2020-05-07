@@ -2,6 +2,7 @@ package com.example.demo.services;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
@@ -98,7 +99,9 @@ public class SlotRequestService {
     }
 
     public List<SlotRequest> getAllSlotRequestsForUserEmail() {
-        return repository.findByUserEmail(SecurityContextHolder.getContext().getAuthentication().getName());
+        List<SlotRequest> userSlots = repository.findByUserEmail(SecurityContextHolder.getContext().getAuthentication().getName());      
+        Collections.sort(userSlots);
+        return userSlots;
     }
 
     public List<SlotRequest> findByEntityIdAndDateOfRequest(String entityId, String date) {

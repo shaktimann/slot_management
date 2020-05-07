@@ -9,7 +9,7 @@ import lombok.Setter;
 
 @Document(indexName = "sr", type = "slotRequest")
 @Data
-public class SlotRequest {
+public class SlotRequest implements Comparable<SlotRequest> {
 
     @Id
     private String id;
@@ -28,4 +28,17 @@ public class SlotRequest {
     @Setter
     private SlotStatus status = SlotStatus.SUBMITTED;
     private String entityName;
+    
+    @Override
+    public int compareTo(SlotRequest slotRequest) {
+        String datediff=((SlotRequest)slotRequest).getBookingDate();
+        if(this.getBookingDate().compareTo(datediff) != 0) {
+           // return this.getBookingDate().compareTo(datediff);
+            return datediff.compareTo(this.getBookingDate());
+        } else {
+            //return (int)(this.getStartTime() - ((SlotRequest)slotRequest).getStartTime());
+            return (int)(((SlotRequest)slotRequest).getStartTime() - this.getStartTime());
+        }
+    }
+
 }
