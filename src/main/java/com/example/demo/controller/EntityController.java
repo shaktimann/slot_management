@@ -1,5 +1,7 @@
 package com.example.demo.controller;
 
+import java.time.LocalTime;
+import java.time.temporal.TemporalField;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -88,7 +90,10 @@ public class EntityController {
         Map<Long, Long> allSlotsWithDates = new HashMap<Long, Long>();
         for (Map.Entry<Long, Long> slot : allSlots.entrySet()) {
             if(slotRequestService.checkIfSlotIsAvailable(id, date, slot.getKey(), slot.getValue())) {
-                allSlotsWithDates.put(slot.getKey(), slot.getValue());
+                {
+                    if(LocalTime.now().getSecond()*1000 <= slot.getKey())
+                    allSlotsWithDates.put(slot.getKey(), slot.getValue());
+                }
             }
         }
         return allSlotsWithDates;
