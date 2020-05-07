@@ -1,5 +1,6 @@
 package com.example.demo.services;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
@@ -35,6 +36,7 @@ public class SlotRequestService {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         slotRequest.setUserEmail(authentication.getName());
         slotRequest.setEntityName(entityService.findEntityById(slotRequest.getEntityId()).get().getName());
+        slotRequest.setBookingDate(LocalDate.now().getMonth()+"-"+LocalDate.now().getDayOfMonth()+"-"+LocalDate.now().getYear());
 
         // check if capacity for that slot duration is available
         if (checkIfSlotIsAvailable(slotRequest.getEntityId(), slotRequest.getDateOfRequest(),
