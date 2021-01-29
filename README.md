@@ -1,3 +1,4 @@
-# hack_project
+# slot_management_booking_system
 
-This is the basic setup for the project
+This enables you a retailer to setup his/her store or an entity. 
+Any customer can then book slots as per his requirements.
